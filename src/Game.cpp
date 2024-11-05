@@ -16,7 +16,12 @@ void Game::initPlayer()
 {
     try
     {
-        player = new Player("Walk.png");
+        sf::Vector2f vecPos;
+        vecPos.x = 12.f;
+        vecPos.y = 12.f;
+        player = new Player("Walk.png", vecPos);
+        player->updatePlayerPositionX(1);
+        player->updatePlayerPositionY(1);
     }
     catch(std::exception &e)
     {
@@ -50,14 +55,27 @@ void Game::pullEvents()
         {
             case sf::Event::Closed:
                 this->window->close();
-                break;
             case sf::Event::KeyPressed:
                 if (this->gameEvent.key.code == sf::Keyboard::Escape)
                     this->window->close();
                 else if (this->gameEvent.key.code == sf::Keyboard::D)
+                {
                     this->player->updateSourcePositionX(8);
+                    this->player->updatePlayerPositionX(0.5f);
+                }
                 else if (this->gameEvent.key.code == sf::Keyboard::A)
+                {
                     this->player->updateSourcePositionX(-8);
+                    this->player->updatePlayerPositionX(-0.5f);
+                }
+                // else if (this->gameEvent.key.code == sf::Keyboard::W)
+                // {
+                //     this->player->updatePlayerPositionY(-0.5f);
+                // }
+                // else if (this->gameEvent.key.code == sf::Keyboard::S)
+                //     this->player->updatePlayerPositionY(0.5f);
+            break;
+            default:
                 break;
         }
     }
@@ -66,7 +84,10 @@ void Game::pullEvents()
 void Game::update()
 {
     pullEvents();
-    this->player->checkPositionX();
+    this->player->checkSourcePositionX();
+    if (this->player->shouldRestSourceXToMax)
+        this->player->resetSourcePositionX();
+
 }
 
 void Game::render()
@@ -81,12 +102,14 @@ void Game::render()
         Renders the game objects
     */
 
+    std::cout << "player position X = " << this->player->sourcePosition.x << std::endl;
+    std::cout << "player position Y = " << this->player->sourcePosition.y << std::endl;
    this->player->animatePlayer();
 
     //Draw here
-    this->window->clear();
 
     this->player->render(*this->window);
 
     this->window->display();
+    this->window->clear(sf::Color::Blue);
 }

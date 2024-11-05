@@ -13,24 +13,34 @@ class Player {
     std::string playerTextureFileName;
     sf::Sprite playerSprite;
 
-    sf::Vector2i playerPosition;
     sf::Texture playerTexture;
-    sf::Vector2i sourcePosition;
     
 
     public:
-        Player(std::string textureFileName);
+        Player(std::string textureFileName, sf::Vector2f &position);
         virtual ~Player();
 
+        bool shouldRestSourceXToMax;
+
+        sf::Vector2f sourcePosition;
+        sf::Vector2f playerPosition;
         void initVariables();
-        void checkPositionX();
-        void updateSourcePositionX(int size);
+        void checkSourcePositionX();
+        void resetSourcePositionX();
+
         void setPlayerSprite();
         void setPlayerTexture();
         void setPlayerTextureFileName(std::string fileName);
+
+        void updatePlayerPositionY(float size);
+        void updatePlayerPositionX(float size);
+
         void setTextureX();
         void setTextureY();
+        void updateSourcePositionX(float size);
+
         void animatePlayer();
+
         void update();
         void render(sf::RenderTarget &target);
 };
