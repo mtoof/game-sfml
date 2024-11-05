@@ -63,8 +63,11 @@ void Player::checkSourcePositionX()
 
 void Player::resetSourcePositionX()
 {
-    if (this->sourcePosition.x <= 1.f)
-        this->sourcePosition.x = (4 * 8);
+    if (this->sourcePosition.x <= 1.f && shouldRestSourceXToMax)
+    {
+        this->sourcePosition.x = 73;
+        shouldRestSourceXToMax = false;
+    }
 }
 
 void Player::updateSourcePositionX(float size)
@@ -75,14 +78,12 @@ void Player::updateSourcePositionX(float size)
         shouldRestSourceXToMax = true;
 }
 
-void Player::updatePlayerPositionY(float size)
-{
-    this->playerSprite.move(this->playerPosition.x, this->playerPosition.y * size);
-    this->playerPosition.y += size;
-}
-
 void Player::updatePlayerPositionX(float size)
 {
     this->playerSprite.move(this->playerPosition.x * size, 0);
-    this->playerPosition.x += size;
+}
+
+void Player::updatePlayerPositionY(float size)
+{
+    this->playerSprite.move(0, this->playerPosition.y * size);
 }

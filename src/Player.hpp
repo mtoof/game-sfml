@@ -13,12 +13,12 @@ class Player {
     std::string playerTextureFileName;
     sf::Sprite playerSprite;
 
-    sf::Texture playerTexture;
     
 
     public:
         Player(std::string textureFileName, sf::Vector2f &position);
         virtual ~Player();
+        sf::Texture playerTexture;
 
         bool shouldRestSourceXToMax;
 

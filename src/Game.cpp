@@ -57,7 +57,10 @@ void Game::pullEvents()
                 this->window->close();
             case sf::Event::KeyPressed:
                 if (this->gameEvent.key.code == sf::Keyboard::Escape)
+                {
                     this->window->close();
+                    break;
+                }
                 else if (this->gameEvent.key.code == sf::Keyboard::D)
                 {
                     this->player->updateSourcePositionX(8);
@@ -68,13 +71,17 @@ void Game::pullEvents()
                     this->player->updateSourcePositionX(-8);
                     this->player->updatePlayerPositionX(-0.5f);
                 }
-                // else if (this->gameEvent.key.code == sf::Keyboard::W)
-                // {
-                //     this->player->updatePlayerPositionY(-0.5f);
-                // }
-                // else if (this->gameEvent.key.code == sf::Keyboard::S)
-                //     this->player->updatePlayerPositionY(0.5f);
-            break;
+                else if (this->gameEvent.key.code == sf::Keyboard::W)
+                {
+                    this->player->updatePlayerPositionY(-0.5f);
+                    this->player->updateSourcePositionX(8);
+                }
+                else if (this->gameEvent.key.code == sf::Keyboard::S)
+                {
+                    this->player->updatePlayerPositionY(0.5f);
+                    this->player->updateSourcePositionX(8);
+                }
+                break;
             default:
                 break;
         }
@@ -87,7 +94,6 @@ void Game::update()
     this->player->checkSourcePositionX();
     if (this->player->shouldRestSourceXToMax)
         this->player->resetSourcePositionX();
-
 }
 
 void Game::render()
@@ -102,12 +108,13 @@ void Game::render()
         Renders the game objects
     */
 
-    std::cout << "player position X = " << this->player->sourcePosition.x << std::endl;
-    std::cout << "player position Y = " << this->player->sourcePosition.y << std::endl;
+    std::cout << "source position X = " << this->player->sourcePosition.x << std::endl;
+    std::cout << "source position Y = " << this->player->sourcePosition.y << std::endl;
+    std::cout << "player position X = " << this->player->playerPosition.x << std::endl;
+    std::cout << "player position Y = " << this->player->playerPosition.y << std::endl;
    this->player->animatePlayer();
 
     //Draw here
-
     this->player->render(*this->window);
 
     this->window->display();
