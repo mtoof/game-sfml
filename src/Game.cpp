@@ -8,7 +8,9 @@ void Game::initVars()
 
 void Game::initWindow()
 {
-    window = new sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");
+    this->videoMode.height = 600;
+    this->videoMode.width = 800;
+    window = new sf::RenderWindow(videoMode, "CMake SFML Project");
     this->window->setFramerateLimit(60);
 }
 
@@ -64,21 +66,25 @@ void Game::pullEvents()
                 else if (this->gameEvent.key.code == sf::Keyboard::D)
                 {
                     this->player->updateSourcePositionX(8);
-                    this->player->updatePlayerPositionX(0.5f);
+                    if (this->player->playerSprite.getPosition().x < 720.50f)
+                        this->player->updatePlayerPositionX(0.5f);
                 }
                 else if (this->gameEvent.key.code == sf::Keyboard::A)
                 {
                     this->player->updateSourcePositionX(-8);
-                    this->player->updatePlayerPositionX(-0.5f);
+                    if (this->player->playerSprite.getPosition().x > 12.5f)
+                        this->player->updatePlayerPositionX(-0.5f);
                 }
                 else if (this->gameEvent.key.code == sf::Keyboard::W)
                 {
-                    this->player->updatePlayerPositionY(-0.5f);
+                    if (this->player->playerSprite.getPosition().y > 12.5f)
+                        this->player->updatePlayerPositionY(-0.5f);
                     this->player->updateSourcePositionX(8);
                 }
                 else if (this->gameEvent.key.code == sf::Keyboard::S)
                 {
-                    this->player->updatePlayerPositionY(0.5f);
+                    if (this->player->playerSprite.getPosition().y <= 500.f)
+                        this->player->updatePlayerPositionY(0.5f);
                     this->player->updateSourcePositionX(8);
                 }
                 break;
@@ -110,9 +116,9 @@ void Game::render()
 
     std::cout << "source position X = " << this->player->sourcePosition.x << std::endl;
     std::cout << "source position Y = " << this->player->sourcePosition.y << std::endl;
-    std::cout << "player position X = " << this->player->playerPosition.x << std::endl;
-    std::cout << "player position Y = " << this->player->playerPosition.y << std::endl;
-   this->player->animatePlayer();
+    std::cout << "player position X = " << this->player->playerSprite.getPosition().x << std::endl;
+    std::cout << "player position Y = " << this->player->playerSprite.getPosition().y << std::endl;
+    this->player->animatePlayer();
 
     //Draw here
     this->player->render(*this->window);

@@ -11,7 +11,6 @@ class Player {
     int increaseX;
     
     std::string playerTextureFileName;
-    sf::Sprite playerSprite;
 
     
 
@@ -19,6 +18,7 @@ class Player {
         Player(std::string textureFileName, sf::Vector2f &position);
         virtual ~Player();
         sf::Texture playerTexture;
+        sf::Sprite playerSprite;
 
         bool shouldRestSourceXToMax;
 

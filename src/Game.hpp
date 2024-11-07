@@ -16,7 +16,7 @@ private:
 public:
     Game();
     virtual ~Game();
-
+    sf::VideoMode videoMode;
     sf::Texture playerTexture;
     sf::Sprite playerSprite;
 
