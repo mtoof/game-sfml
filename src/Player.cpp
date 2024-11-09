@@ -78,6 +78,11 @@ void Player::checkSourcePositionXMin()
     }
 }
 
+std::string const & Player::getPlayerTextureFileName()
+{
+    return playerTextureFileName;
+}
+
 const float Player::getPlayerSpritePositionX()
 {
     return playerSprite.getPosition().x;

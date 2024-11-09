@@ -42,6 +42,7 @@ class Player {
         void animatePlayer();
         void reverseAnimatePlayer();
 
+        std::string const &getPlayerTextureFileName();
         const float getPlayerSpritePositionX();
         const float getPlayerSpritePositionY();
         const float getPlayerSpriteImageWidth();
