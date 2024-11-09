@@ -2,11 +2,12 @@
 
 Player::Player(std::string textureFileName, sf::Vector2f &position): playerTextureFileName(textureFileName)
 {
-    this->initVariables();
+    initVariables();
     playerPosition.x  = position.x;
     playerPosition.y = position.y;
-    this->setPlayerTexture();
-    this->setPlayerSprite();
+    setPlayerTexture();
+    setPlayerSprite();
+    update();
 }
 
 Player::~Player()
@@ -15,75 +16,122 @@ Player::~Player()
 
 void Player::initVariables()
 {
-    this->sourcePosition.x = 1.f;
-    this->sourcePosition.y = 50.f;
+    sourcePosition.x = 1.f;
+    sourcePosition.y = 50.f;
     shouldRestSourceXToMax = false;
-    this->imageHeight = 80;
-    this->imageWidth = 90;
+    imageHeight = 80;
+    imageWidth = 90;
     increaseX = 16;
+    playerDirection = RIGHT;
 }
 
 
 void Player::setPlayerTexture()
 {
-    if (!this->playerTexture.loadFromFile("../src/texture/Gangster/" + playerTextureFileName))
-        throw std::runtime_error("Player::setPlayerTexture::Could not load player texture");
+    if (!playerTexture.loadFromFile("../src/texture/Gangster/" + playerTextureFileName))
+        throw std::runtime_error("Player::setPlayerTexture::Could not load player " + playerTextureFileName + " texture");
 }
 
 void Player::setPlayerTextureFileName(std::string fileName)
 {
-    this->playerTextureFileName = fileName;
+    playerTextureFileName = fileName;
 }
 
 void Player::setPlayerSprite()
 {
-    this->playerSprite.setTexture(this->playerTexture);
+    playerSprite.setTexture(playerTexture);
 }
 
 void Player::update()
 {
+    playerSprite.setScale({1.5f, 1.5f});
 }
 
 void Player::render(sf::RenderTarget &target)
 {
-    target.draw(this->playerSprite);
+    target.draw(playerSprite);
 }
 
 void Player::animatePlayer()
 {
-    this->playerSprite.setTextureRect(sf::IntRect(this->sourcePosition.x * increaseX, this->sourcePosition.y, imageWidth, imageHeight));
+    playerSprite.setTextureRect(sf::IntRect(sourcePosition.x * increaseX, sourcePosition.y, imageWidth, imageHeight));
+}
+
+void Player::reverseAnimatePlayer()
+{
+    playerSprite.setTextureRect(sf::IntRect(sourcePosition.x * (-increaseX), sourcePosition.y, imageWidth, imageHeight));
 }
 
 
-void Player::checkSourcePositionX()
+void Player::checkSourcePositionXMax()
 {
-    if (this->sourcePosition.x * increaseX >= this->playerTexture.getSize().x)
-        this->sourcePosition.x = 1.f;
+    if (sourcePosition.x * increaseX >= playerTexture.getSize().x)
+        sourcePosition.x = 1.f;
 }
 
-void Player::resetSourcePositionX()
+void Player::checkSourcePositionXMin()
 {
-    if (this->sourcePosition.x <= 1.f && shouldRestSourceXToMax)
+    if (sourcePosition.x <= 1.f && shouldRestSourceXToMax)
     {
-        this->sourcePosition.x = 73;
+        sourcePosition.x = 73;
         shouldRestSourceXToMax = false;
+    }
+}
+
+const float Player::getPlayerSpritePositionX()
+{
+    return playerSprite.getPosition().x;
+}
+
+const float Player::getPlayerSpritePositionY()
+{
+    return playerSprite.getPosition().y;
+}
+
+const float Player::getPlayerSpriteImageWidth()
+{
+    return imageWidth;
+}
+
+const float Player::getPlayerSpriteImageHeight()
+{
+    return imageHeight;
+}
+
+const int Player::getPlayerDirection()
+{
+    return playerDirection;
+}
+
+void Player::flipPlayer(int direction)
+{
+    sf::Vector2f currentScale = playerSprite.getScale();
+    if (direction == LEFT)
+    {
+        playerSprite.setScale(-currentScale.x, currentScale.y);
+        playerDirection = LEFT;
+    }
+    else if (direction == RIGHT)
+    {
+        playerSprite.setScale(currentScale.x * (-1), currentScale.y);
+        playerDirection = RIGHT;
     }
 }
 
 void Player::updateSourcePositionX(float size)
 {
-    if ((this->sourcePosition.x + size) >= 0)
-        this->sourcePosition.x += size;
-    if ((size <= 0 && (this->sourcePosition.x <= 1.f)))
+    if ((sourcePosition.x + size) >= 0)
+        sourcePosition.x += size;
+    if ((size <= 0 && (sourcePosition.x <= 1.f)))
         shouldRestSourceXToMax = true;
 }
 
 void Player::updatePlayerPositionX(float size)
 {
-    this->playerSprite.move(this->playerPosition.x * size, 0);
+    playerSprite.move(playerPosition.x * size, 0);
 }
 
 void Player::updatePlayerPositionY(float size)
 {
-    this->playerSprite.move(0, this->playerPosition.y * size);
+    playerSprite.move(0, playerPosition.y * size);
 }

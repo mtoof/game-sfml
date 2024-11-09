@@ -1,33 +1,32 @@
-// #pragma once
+#pragma once
 
-#include "headers.hpp"
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+
+enum Direction {LEFT, RIGHT};
 
 class Player {
     private:
 
-    int imageHeight, imageWidth;
-    int increaseX;
-    
-    std::string playerTextureFileName;
+        float imageHeight, imageWidth;
+        int increaseX;
 
-    
+        std::string playerTextureFileName;
+        sf::Vector2f playerPosition;
+        sf::Sprite playerSprite;
+        int playerDirection;
 
     public:
         Player(std::string textureFileName, sf::Vector2f &position);
         virtual ~Player();
         sf::Texture playerTexture;
-        sf::Sprite playerSprite;
 
         bool shouldRestSourceXToMax;
 
         sf::Vector2f sourcePosition;
-        sf::Vector2f playerPosition;
-        void initVariables();
-        void checkSourcePositionX();
-        void resetSourcePositionX();
 
+        void initVariables();
+        void checkSourcePositionXMax();
+        void checkSourcePositionXMin();
         void setPlayerSprite();
         void setPlayerTexture();
         void setPlayerTextureFileName(std::string fileName);
@@ -37,9 +36,17 @@ class Player {
 
         void setTextureX();
         void setTextureY();
+        void flipPlayer(int direction);
         void updateSourcePositionX(float size);
 
         void animatePlayer();
+        void reverseAnimatePlayer();
+
+        const float getPlayerSpritePositionX();
+        const float getPlayerSpritePositionY();
+        const float getPlayerSpriteImageWidth();
+        const float getPlayerSpriteImageHeight();
+        const int   getPlayerDirection();
 
         void update();
         void render(sf::RenderTarget &target);
